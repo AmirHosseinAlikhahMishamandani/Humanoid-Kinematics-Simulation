@@ -141,6 +141,4 @@ Q = zeros(7,len_LA);
 Jacob_LA = pLA.jacobe(Q);
 Q = zeros(7,len_RA);
 Jacob_RA = pRA.jacobe(Q);
-%% ---------------------------- inverseDynamics ---------------------------
-tau = inverseDynamics(pLL);
 %% ------------------------------------------------------------------------
