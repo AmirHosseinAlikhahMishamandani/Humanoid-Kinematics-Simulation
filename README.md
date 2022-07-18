@@ -6,13 +6,18 @@ Read PDF file for more info.
 <img width="415" alt="image" src="https://user-images.githubusercontent.com/39452919/179138160-4621cb46-8e32-4f88-bfd6-5b6e32f0bf92.png">
 
 Link [THETA D A ALPHA SIGMA OFFSET]
-Theta: Joint Angle
-D: Link offset
-A: Link length
-ALPHA: Link Twist
-OFFSET: a constant displacement between the user joint angle vector and the true kinematic solution.
-SIGMA: SIGMA=0 for a revolute & 1 for a prismatic joint.
 
+Theta: Joint Angle
+
+D: Link offset
+
+A: Link length
+
+ALPHA: Link Twist
+
+OFFSET: a constant displacement between the user joint angle vector and the true kinematic solution.
+
+SIGMA: SIGMA=0 for a revolute & 1 for a prismatic joint.
 
 Init Environment
 
