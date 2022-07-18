@@ -15,12 +15,21 @@ SIGMA: SIGMA=0 for a revolute & 1 for a prismatic joint.
 
 
 Init Environment
+
 Defining Base as Platform
+
 Defining DH Parameters for platform, Right Arm, Left Arm, Left Leg, and Right Leg.
+
 Assembeling Platform & Right Arm.
+
 Assembeling Platform & Left Arm.
+
 Assembeling Platform & Left Leg.
+
 Assembeling Platform & Right Leg.
+
 Getting Jacobians.
+
 Solving Forward kinematics to Get Torques for Each Joints.
+
 Solving Inverse kinematics to Get the End-effector Pose.
