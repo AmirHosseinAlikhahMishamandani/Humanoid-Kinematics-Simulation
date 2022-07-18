@@ -14,8 +14,10 @@ pi = 3.14;
 %%  OFFSET is a constant displacement between the user joint angle vector 
 %   and the true kinematic solution.
 %% SIGMA SIGMA=0 for a revolute and 1 for a prismatic joint.
+disp('------------------------------ DH Parameters  ');
 %% ------------------------------ platform  -------------------------------
-platform=SerialLink([0 0 0 0],'name','platform','modified');
+disp('------------------------------ Base  ');
+platform=SerialLink([0 0 0 0],'name','platform','modified')
 platform.base=[1 0 0 0;
                0 1 0 0;
                0 0 1 0;
@@ -34,7 +36,8 @@ RA(3).qlim = [0,deg2rad(60)]; % Shoulder Roll
 RA(4).qlim = [0,deg2rad(140)]; % Elbow Pitch
 RA(5).qlim = [0,0];%end-effector
 %% -------------------------- Assembly Right Arm --------------------------
-pRA=SerialLink([platform,Humanoid_Robot_RA],'name','RA'); 
+disp('------------------------------ Right Arm  ');
+pRA=SerialLink([platform,Humanoid_Robot_RA],'name','RA')
 view(3)
 hold on
 grid on
@@ -59,7 +62,8 @@ LA(3).qlim = [0,deg2rad(60)]; % Shoulder Roll
 LA(4).qlim = [0,deg2rad(140)]; % Elbow Pitch
 LA(5).qlim = [0,0]; %end-effector
 %% -------------------------- Assembly Left Arm ---------------------------
-pLA=SerialLink([platform,Humanoid_Robot_LA],'name','LA'); 
+disp('------------------------------ Left Arm  ');
+pLA=SerialLink([platform,Humanoid_Robot_LA],'name','LA')
 view(3)
 hold on
 grid on
@@ -89,7 +93,8 @@ LL(5).qlim = [deg2rad(-45),deg2rad(45)]; %Ankle Pitch -45 to 45
 LL(6).qlim = [deg2rad(-20),deg2rad(20)]; %Ankle Roll -20 to 20
 LL(7).qlim = [0,0]; %end-effector
 %% -------------------------- Assembly Left Arm ---------------------------
-pLL=SerialLink([platform,Humanoid_Robot_LL],'name','LL'); 
+disp('------------------------------ Left Leg  ');
+pLL=SerialLink([platform,Humanoid_Robot_LL],'name','LL')
 view(3)
 hold on
 grid on
@@ -119,7 +124,8 @@ RL(5).qlim = [deg2rad(-45),deg2rad(45)]; %Ankle Pitch -45 to 45
 RL(6).qlim = [deg2rad(-20),deg2rad(20)]; %Ankle Roll -20 to 20
 RL(7).qlim = [0,0]; %end-effector
 %% -------------------------- Assembly Right Arm --------------------------
-pRL=SerialLink([platform,Humanoid_Robot_RL],'name','RL'); 
+disp('------------------------------ Right Leg  ');
+pRL=SerialLink([platform,Humanoid_Robot_RL],'name','RL')
 view(3)
 hold on
 grid on
@@ -133,6 +139,7 @@ pRL.plot([init_RL],'scale',.5)
 pRL.teach
 hold on
 %% -------------------------------- Jacobian ------------------------------
+disp('------------------------------ Jacobians  ');
 Q = zeros(7,len_LL);
 Jacob_LL = pLL.jacobe(Q);
 display(Jacob_LL)
@@ -146,6 +153,7 @@ Q = zeros(7,len_RA);
 Jacob_RA = pRA.jacobe(Q);
 display(Jacob_RA)
 %% --------------------------- Forward kinematics -------------------------
+disp('------------------------------ Forward kinematics  ');
 Q = zeros(1,len_LL+1);
 T_FK_LL = pLL.fkine(Q);
 display(T_FK_LL)
@@ -159,6 +167,7 @@ Q = zeros(1,len_RA+1);
 T_FK_RA = pRA.fkine(Q);
 display(T_FK_RA)
 %% --------------------------- Inverse kinematics -------------------------
+disp('------------------------------ Inverse kinematics ');
 Q = zeros(1,len_LL+1);
 Q_IK_LL = pLL.ikine(T_FK_LL);
 display(Q_IK_LL)
@@ -171,4 +180,24 @@ display(Q_IK_LA)
 Q = zeros(1,len_RA+1);
 Q_IK_RA = pRA.ikine(T_FK_RA);
 display(Q_IK_RA)
+%% --------------------- Joint forces due to payload ----------------------
+disp('------------------------------ Joint forces due to payload  ');
+disp('------------------------------ generalised joint force/torques due to a payload wrench ');
+disp('------------------------------ Left Leg  ');
+%W is a wrench vector applied at the end effector, W = [Fx Fy Fz Mx My Mz]'.
+W = [0 0 -19.6133 0 0 0]';
+T_LL = pLL.pay(W, Jacob_LL);
+disp(T_LL);
+disp('------------------------------ Right Leg ');
+W = [0 0 -19.6133 0 0 0]';
+T_RL = pRL.pay(W, Jacob_RL);
+disp(T_RL);
+disp('------------------------------ Left Arm  ');
+W = [0 0 -19.6133 0 0 0]';
+T_LA = pLA.pay(W, Jacob_LA);
+disp(T_LA);
+disp('------------------------------ Right Arm  ');
+W = [0 0 -19.6133 0 0 0]';
+T_RA = pRA.pay(W, Jacob_RA);
+disp(T_RA);
 %% ------------------------------------------------------------------------
