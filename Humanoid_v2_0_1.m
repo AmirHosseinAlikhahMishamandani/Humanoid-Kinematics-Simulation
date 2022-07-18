@@ -44,7 +44,7 @@ for i=1:len_RA+1
     init_RA(i) = 0;
 end
 pRA.plot([init_RA],'scale',.5)
-% pRA.teach
+pRA.teach
 hold on  
 %% ------------------------------ Left Arm --------------------------------           
 LA(1)=Link([0        0.49077   0         0         0     0],'modified');  
@@ -76,9 +76,9 @@ hold on
 LL(1)=Link([0       -0.120       0            pi/2        0     0  ],'modified'); 
 LL(2)=Link([0       0              0            pi/2        0    -pi/2  ],'modified');
 LL(3)=Link([0       0              0            -pi/2        0    -pi/2 ],'modified');
-LL(4)=Link([0       0              0.42       pi/2         0    0 ],'modified');
+LL(4)=Link([0       0              0.42       -pi/2         0    0 ],'modified');
 LL(5)=Link([0       0        0.42            0        0     0],'modified');
-LL(6)=Link([0       0.0772              0           -pi/2            0   0],'modified');
+LL(6)=Link([0       0.0772              0           pi/2            0   0],'modified');
 LL(7)=Link([0       0              0          0            0   0],'modified');
 Humanoid_Robot_LL=SerialLink(LL,'name','LEFTLEG');
 LL(1).qlim = [deg2rad(-50),deg2rad(50)]; %Hip Pitch -50 to 50
@@ -100,15 +100,15 @@ for i=1:len_LL+1
     init_LL(i) = 0;
 end
 pLL.plot([init_LL],'scale',.5)
-pLL.teach
+% pLL.teach
 hold on
 %% ------------------------------ Right Leg --------------------------------           
 RL(1)=Link([0       0.120       0            pi/2        0     0  ],'modified'); 
 RL(2)=Link([0       0              0            pi/2        0    -pi/2  ],'modified');
 RL(3)=Link([0       0              0            -pi/2        0    -pi/2 ],'modified');
-RL(4)=Link([0       0              0.42       pi/2         0    0 ],'modified');
+RL(4)=Link([0       0              0.42       -pi/2         0    0 ],'modified');
 RL(5)=Link([0       0        0.42            0        0     0],'modified');
-RL(6)=Link([0       0.0772              0           -pi/2            0   0],'modified');
+RL(6)=Link([0       0.0772              0           pi/2            0   0],'modified');
 RL(7)=Link([0       0              0           0            0   0],'modified');
 Humanoid_Robot_RL=SerialLink(RL,'name','RightLEG');
 RL(1).qlim = [deg2rad(-50),deg2rad(50)]; %Hip Pitch -50 to 50
@@ -135,10 +135,40 @@ hold on
 %% -------------------------------- Jacobian ------------------------------
 Q = zeros(7,len_LL);
 Jacob_LL = pLL.jacobe(Q);
+display(Jacob_LL)
 Q = zeros(7,len_RL);
 Jacob_RL = pRL.jacobe(Q);
+display(Jacob_RL)
 Q = zeros(7,len_LA);
 Jacob_LA = pLA.jacobe(Q);
+display(Jacob_LA)
 Q = zeros(7,len_RA);
 Jacob_RA = pRA.jacobe(Q);
+display(Jacob_RA)
+%% --------------------------- Forward kinematics -------------------------
+Q = zeros(1,len_LL+1);
+T_FK_LL = pLL.fkine(Q);
+display(T_FK_LL)
+Q = zeros(1,len_RL+1);
+T_FK_RL = pRL.fkine(Q);
+display(T_FK_RL)
+Q = zeros(1,len_LA+1);
+T_FK_LA = pLA.fkine(Q);
+display(T_FK_LA)
+Q = zeros(1,len_RA+1);
+T_FK_RA = pRA.fkine(Q);
+display(T_FK_RA)
+%% --------------------------- Inverse kinematics -------------------------
+Q = zeros(1,len_LL+1);
+Q_IK_LL = pLL.ikine(T_FK_LL);
+display(Q_IK_LL)
+Q = zeros(1,len_RL+1);
+Q_IK_RL = pRL.ikine(T_FK_RL);
+display(Q_IK_RL)
+Q = zeros(1,len_LA+1);
+Q_IK_LA = pLA.ikine(T_FK_LA);
+display(Q_IK_LA)
+Q = zeros(1,len_RA+1);
+Q_IK_RA = pRA.ikine(T_FK_RA);
+display(Q_IK_RA)
 %% ------------------------------------------------------------------------
